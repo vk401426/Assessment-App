@@ -1,0 +1,51 @@
+<table class="styled-table">
+    <thead>
+        <tr">
+            <th >ID</th>
+            <th>Full Name</th>
+            <th>Gender</th>
+            <th>Date of Birth</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Qualification</th>
+            <th>Specialization</th>
+            <th>Experience (Years)</th>
+            <th>Job Title</th>
+            <th>Resume</th>
+            <th>Remote</th>
+            <th>Job ID</th>
+            <th>UUID</th>
+            <th>Marks</th>
+            <th>Submitted At</th>
+        </tr>
+        
+    </thead>
+    <tbody>
+        
+        <% applications.forEach(application => { %>
+        <tr>
+            <td><%= application.id %></td>
+            <td><%= application.prefix %>. <%= application.firstName %> <%= application.middleName %> <%= application.lastName %></td>
+            <td><%= application.gender %></td>
+            <td><%= application.dob %></td>
+            <td><%= application.countryCode %> <%= application.contact %></td>
+            <td><%= application.email %></td>
+            <td><%= application.qualification %></td>
+            <td><%= application.specialization %></td>
+            <td><%= application.experience %></td>
+            <td><%= application.jobTitle %></td>
+            <td>
+                <% if (application.resume) { %>
+                    <a href="data:application/pdf;base64,<%= application.resume.toString('base64') %>" download="resume_<%= application.uuid %>.pdf">Download Resume</a>
+                <% } else { %>
+                    <span>No Resume Uploaded</span>
+                <% } %>
+            </td>
+            <td><%= application.remote %></td>
+            <td><%= application.jobid %></td>
+            <td><%= application.uuid %></td>
+            <td><%= application.marks %></td>
+            <td style="width: fit-content"><%= application.submitted_at %></td>
+        </tr>
+        <% }); %>
+    </tbody>

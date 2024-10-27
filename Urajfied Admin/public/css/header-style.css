@@ -1,0 +1,98 @@
+.header-start {
+  
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  height: inherit;
+}
+.lheader-box {
+  z-index: 0;
+  display: flex;
+  align-items: center;
+}
+.lheader-box * {
+  flex: 0 0 auto;
+}
+
+@property --angle{
+  syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+}
+#hdr-title {
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  background:#6640af;
+  color: #fff;
+  height: 3.5rem;
+  width: 20rem;
+  border-radius: 1rem;
+}
+#hdr-title::before{
+  content: '';
+  position: absolute;
+  height: 3.5rem;
+  width: 20rem;
+  padding: .3rem;
+  filter: blur(.2rem);
+  /* opacity: .5; */
+  border-radius: 1.3rem;
+  z-index:-1 ;
+  animation: spin 2s infinite linear;
+  background:conic-gradient(from var(--angle),var(--border-btn) 0deg 70deg,transparent 70deg ,#5dacfc 180deg 250deg,transparent 250deg ,var(--border-btn) 360deg 90deg );
+}
+
+.rheader-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: inherit;
+  z-index: 0;
+  width: 5rem;
+}
+.prfl-hdr-box {
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 2.9rem;
+  width: 2.9rem;
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+}
+.prfl-hdr-box::before {
+  animation: spin 2s infinite linear;
+  content: "";
+  position: absolute;
+  height: 3.3rem;
+  width: 3.2rem;
+  padding: .2rem;
+  z-index: -1;
+  border-radius: 50%;
+  background: conic-gradient(
+    from var(--angle),
+    #ff5f6d,
+    #ffc371,
+    #ffd700,
+    #32cd32,
+    #00fa9a,
+    #1e90ff,
+    #9370db,
+    #ff5f6d
+  );
+}
+
+
+@keyframes spin {
+  from{
+      --angle : 0deg;
+  }
+  to{
+      --angle : 360deg
+}
+}

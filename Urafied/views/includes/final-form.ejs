@@ -1,0 +1,120 @@
+<h1>Job Assessment Test Registration</h1>
+<form action="/final" method="post" enctype="multipart/form-data">
+
+  <!-- Prefix and Name Fields Row -->
+  <div class="form-row">
+    <div class="form-group">
+      <label for="prefix">Prefix</label>
+      <select id="prefix" name="prefix" required style="width: fit-content;" disabled>
+        <option value="<%= data.prefix %>" selected><%= data.prefix %></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" name="firstName" required placeholder="First name" value="<%= data.firstName %>" readonly disabled>
+    </div>
+    <div class="form-group">
+      <label for="middleName">Middle Name</label>
+      <input type="text" id="middleName" name="middleName" placeholder="Middle name" value="<%= data.middleName %>" readonly disabled>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" name="lastName" required placeholder="Last name" value="<%= data.lastName %>" readonly disabled>
+    </div>
+  </div>
+
+  <!-- Gender and DOB Row -->
+  <div class="form-row">
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender" required disabled>
+        <option value="<%= data.gender %>" selected> <%= data.gender %></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob" name="dob" required value="<%= data.dob %>" readonly disabled>
+    </div>
+  </div>
+
+  <!-- Contact and Email Row -->
+  <div class="form-row">
+    <div class="form-group">
+      <label for="contact">Contact Number</label>
+      <div class="contact-group">
+        <select id="countryCode" name="countryCode" class="country-code" required disabled>
+          <option value="<%= data.countryCode %>" selected><%= data.countryCode %></option>
+        </select>
+        <input type="tel" id="contact" name="contact" class="phone-number" required placeholder="Phone number" value="<%= data.contact %>" readonly disabled>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required placeholder="Email address" value="<%= data.email %>" readonly disabled>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="jobid">JOB </label>
+      <select id="jobid" name="jobid" required disabled>
+        <option value="<%= data.jobid %>"><%= data.jobid %></option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="marks">Test Score </label>
+      <input type="number" id="marks" name="marks" required value="<%= data.marks%>" placeholder="Test Score" readonly disabled>
+    </div>
+  </div>
+
+  <!-- Qualification and Specialization Row -->
+  <div class="form-row">
+    <div class="form-group">
+      <label for="qualification">Highest Qualification</label>
+      <select id="qualification" name="qualification" required>
+        <option value="">Select</option>
+        <option value="highschool">High School</option>
+        <option value="diploma">Diploma</option>
+        <option value="bachelors">Bachelor's Degree</option>
+        <option value="masters">Master's Degree</option>
+        <option value="phd">PhD</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="specialization">Specialization</label>
+      <input type="text" id="specialization" name="specialization" required placeholder="Field of study">
+    </div>
+  </div>
+
+  <!-- Experience and Job Title Row -->
+  <div class="form-row">
+    <div class="form-group">
+      <label for="experience">Years of Experience</label>
+      <input type="number" id="experience" name="experience" min="0" placeholder="Years of experience">
+    </div>
+    <div class="form-group">
+      <label for="jobTitle">Previous Job Title</label>
+      <input type="text" id="jobTitle" name="jobTitle" placeholder="Last job title">
+    </div>
+  </div>
+
+  <!-- Resume Upload -->
+  <div class="form-group">
+    <label for="resume">Resume (optional)</label>
+    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx">
+  </div>
+
+  <!-- Remote Job Preference -->
+  <div class="form-group">
+    <label>Are you comfortable with a remote job?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="remote" value="yes" required> Yes</label>
+      <label><input type="radio" name="remote" value="no" required> No</label>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit">Start Test</button>
+</form>
+<br><br><br><br>

@@ -1,0 +1,54 @@
+:root{
+  --bg:#dfeafb;
+  --major:#fff9e2;
+  --minor:#F8E9FE;
+  --border-btn:#f11e56;
+  --border-logo:#ff4677;
+  --scroll-bar:#495057;
+  --sem-navbar:linear-gradient(169deg, #ff4677 0%, #763fb9 100%);
+  --course-toggle:rgb(32,50,69);
+  --white:#fff;
+}
+
+* {
+  color: #1d1d1d;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  font-family: "Tilt Neon", sans-serif;
+}
+body {
+  height: 100dvh;
+  width: 100dvw;
+}
+.main {
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  height: calc(100dvh - 1rem);
+  padding: 0.51rem;
+  background: var(--bg);
+}
+
+.xm-fg {
+  flex: 1;
+  display: flex;
+  gap: .5rem;
+  flex-direction: column;
+}
+.header-box {
+  height: 5rem;
+  border-radius: 1rem;
+  
+}
+.content-box {
+  /* padding: 1rem; */
+  /* overflow: auto; */
+  height: calc(100dvh - 6.7rem);
+  width: 100%;
+  border-radius: 1rem;
+  background:var(--major);
+}

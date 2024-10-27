@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <% if (exdata.page=='home') { %>
+    <title><%= exdata.pagehead %></title>
+  <% } else if(exdata.page=='final') {%>
+    <title><%= exdata.pagehead %></title>
+  <% } else if(exdata.page=='thanks') {%>
+    <title><%= exdata.pagehead %></title>
+  <% }%>
+  <%- include('includes/link-css.ejs') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+
+</head>
+
+<body id="body">
+  <div class="main">
+    <div class="xm-fg">
+      <div class="header-box" id="header-box">
+        <%- include('includes/header.ejs') %>
+      </div>
+      <div class="content-box" id="content-box">
+        <div class="content-start">
+          <div id="content-start">
+            <div class="cnt-heddr">
+              <% if (exdata.page=='home') { %>
+                <%- include('includes/pretest-form.ejs') %>
+              <% } else if(exdata.page=='final') {%>
+                <%- include('includes/final-form.ejs') %>
+              <% } else if(exdata.page=='thanks') {%>
+                <%- include('includes/thanks.ejs') %>
+              <% }%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</body>
+
+</html>

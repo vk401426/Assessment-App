@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%=  qsList[0].jobname.toUpperCase() %> ASSESSMENT </title>
+    <%- include('includes/link-css.ejs') %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body class="test-main">
+    <!-- <div > -->
+      <div class="test-header">
+        <div class="aux-options">
+          <div><%= mis_data[0].firstName%> <%=mis_data[0].middleName %> <%= mis_data[0].lastName %></div>
+          <div>ID : <%=  mis_data[0].uuid %></div>
+        </div>
+        <div class="timer" style="display: flex; flex-direction: column;"><p style="margin: 0;">Test Ends in</p><div id="timer" style="color: #000; font-size: 2rem; font-weight: 700;">00:00</div></div>
+      </div>
+  
+      <div class="content-group">
+        <div class="cnt-grp-ele grp-ele-a" ><%=  qsList[0].jobname  %></div>
+      </div>
+      <div class="test-content">
+        <div class="cont-a" id="cont-a">
+          <!-- start -->
+          
+        </div>
+        <div class="cont-b">
+          <div class="ques-indication-stat">
+            <div><iconify-icon icon="tabler:square-number-0-filled" width="2rem" height="2rem"  style="color: #0d6e2a"></iconify-icon>Answered</div>
+            <div><iconify-icon icon="tabler:square-number-0-filled" width="2rem" height="2rem"  style="color: #ff0000"></iconify-icon>Unanswered</div>
+            <div><iconify-icon icon="tabler:square-number-0-filled" width="2rem" height="2rem"  style="color: #0008ff"></iconify-icon>Marked for Review</div>
+            <div><iconify-icon icon="tabler:square-number-0-filled" width="2rem" height="2rem"  style="color: #bfbaba"></iconify-icon>Not Visited</div>
+            <div><iconify-icon icon="tabler:square-number-0-filled" width="2rem" height="2rem"  style="color: #eb5200"></iconify-icon>Answered and Marked for review</div>
+          </div>
+          <div class="ques-index-list">
+            <% for(i=0;i<qsList.length;i++) {%>
+            <button class="ques-index-list-btn" ><%= i+1 %></button>
+            <% } %>
+          </div>
+        </div>
+        
+      </div>
+    
+
+      <div style="display: flex; justify-content: center;">
+        <div class="nav-bar">
+          <div style="width: fit-content; text-align: end;">
+            <label for="reviewCheckbox"><div style="font-size: 1.3rem" id="markForReview" for="reviewCheckbox">Mark for review</div></label>
+            <input type="checkbox" id="reviewCheckbox" style="display: none ;">
+          </div>
+          <div>
+            <button class="previous-ques" style="opacity:.8;">Previous</button>
+            <button class="next-ques" value="0">Next</button>
+          </div>
+          <div class="submit">
+            <button id="submit-btn">Submit</button>
+          </div>
+        </div>
+      <!-- </div> -->
+    </div>
+    <!-- Pop-up alert element -->
+<div id="alert">10 minutes left!</div>
+
+<!-- Modal Pop-up for Test Completion -->
+<div class="container text-center mt-5">
+  <div id="completion-modal" class="modal">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-body" id="modal-content">
+                  <!-- Progress bar and results will be inserted here -->
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+  </body>
+  <script>
+    const qusList = <%- JSON.stringify(qsList) %>;
+    const misData = <%- JSON.stringify(mis_data) %>;
+    let btnNxtQues = document.querySelector('.next-ques');
+    let btnPrevQues = document.querySelector('.previous-ques');
+    let opt='';
+    let userAns = [];
+    
+
+    function loadQues(i) {
+  return `
+  <div class="ques-box">
+        <div class="ques-header-root">
+          <div class="ques-header">
+            <div class="ques-head-index" id="ques-head-index">${i + 1}</div>
+            |
+            <div class="ques-head-marks">
+              Marks : <span style="color: red"> +1 </span> |<span style="color: green"> -1 </span>
+            </div>
+            <div class="ques-head-type">Single</div>
+          </div>
+          <div class="ques-head-report">
+            <iconify-icon
+              icon="solar:menu-dots-bold-duotone"
+              width="1.8rem"
+              height="1.8rem"
+            ></iconify-icon>
+          </div>
+        </div>
+        <div class="ques-main">
+        ${qusList[i].questions.que_txt}
+        </div>
+      </div>
+      <div class="option">
+    <label for="opt-a">
+      <input type="radio" name="answer" id="opt-a" value="A">
+      <div class="opt opt-a">
+        <div class="opt-index">A</div>
+        <p style="font-weight: 800; margin: 0 .4rem; font-size: 1.5rem;"></p>
+        <div class="opt-a">${qusList[i].questions.options.A}</div>
+      </div>
+    </label>
+    <label for="opt-b">
+      <input type="radio" name="answer" id="opt-b" value="B">
+      <div class="opt opt-b"">
+        <div class="opt-index">B</div>
+        <p style="font-weight: 800; margin: 0 .4rem; font-size: 1.5rem;"></p>
+        <div class="opt-b">${qusList[i].questions.options.B}</div>
+      </div>
+    </label>
+    <label for="opt-c">
+      <input type="radio" name="answer" id="opt-c" value="C">
+      <div class="opt opt-c">
+        <div class="opt-index">C</div>
+        <p style="font-weight: 800; margin: 0 .4rem; font-size: 1.5rem;"></p>
+        <div class="opt-c">${qusList[i].questions.options.C}</div>
+      </div>
+    </label>
+    <label for="opt-d">
+      <input type="radio" name="answer" id="opt-d" value="D">
+      <div class="opt opt-d">
+        <div class="opt-index">D</div>
+        <p style="font-weight: 800; margin: 0 .4rem; font-size: 1.5rem;"></p>
+        <div class="opt-d">${qusList[i].questions.options.D}</div>
+      </div>
+    </label>
+    <input type="radio" name="answer" id="opt-e" value="N" checked>
+  </div>
+      `;
+}
+
+function attachOptionEventListeners() {
+  document.querySelectorAll('.opt').forEach(box => {
+    box.addEventListener('click', function() {
+      document.querySelectorAll('.opt').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+}
+
+function nextQues(i) {
+  document.getElementById('cont-a').innerHTML = loadQues(i);
+  opt = document.querySelectorAll('.opt');
+  remSelect(i);
+  attachOptionEventListeners(); // Reattach event listeners after loading new content
+}
+
+nextQues(0);
+
+// Next question button logic
+btnNxtQues.addEventListener('click', () => {
+  const selectedOption = document.querySelector('input[name="answer"]:checked');
+  console.log(selectedOption.value); // Logs the selected answer
+  let val = parseInt(btnNxtQues.value) + 1;
+
+  if (qusList.length > val) {
+    nextQues(val);
+    // quesMark();
+    userAns[(val-1)] = selectedOption.value;
+    btnNxtQues.value = val;
+    btnPrevQues.removeAttribute('disabled'); // Enable the previous button when moving forward
+    btnPrevQues.style.opacity = '1';
+  }
+
+  // Disable the next button on the last question
+  if (qusList.length - 1 == val) {
+    btnNxtQues.setAttribute('disabled', '');
+    btnNxtQues.style.opacity = '0.4';
+  }
+});
+
+// Previous question button logic
+btnPrevQues.addEventListener('click', () => {
+  const selectedOption = document.querySelector('input[name="answer"]:checked');
+  let val = parseInt(btnNxtQues.value) - 1;
+
+  if (val >= 0) {
+    nextQues(val);
+    userAns[(val+1)] = selectedOption.value;
+    btnNxtQues.value = val;
+    btnNxtQues.removeAttribute('disabled'); // Enable the next button when moving backward
+    btnNxtQues.style.opacity = '1';
+  }
+
+  // Disable the previous button on the first question
+  if (val === 0) {
+    btnPrevQues.setAttribute('disabled', '');
+    btnPrevQues.style.opacity = '0.4';
+  }
+});
+
+function remSelect(i) {
+  if (userAns[i] == 'A') {
+    document.querySelector('.opt-a').classList.add('active');
+    document.querySelector('#opt-a').checked=true;
+  } else if (userAns[i] == 'B') {
+    document.querySelector('.opt-b').classList.add('active');
+    document.querySelector('#opt-b').checked=true;
+  } else if (userAns[i] == 'C') {
+    document.querySelector('.opt-c').classList.add('active');
+    document.querySelector('#opt-c').checked=true;
+  } else if (userAns[i] == 'D') {
+    document.querySelector('.opt-d').classList.add('active');
+    document.querySelector('#opt-d ').checked=true;
+  }
+}
+
+// function quesMark()
+// {
+//   const selectedOption = document.querySelector('input[name="answer"]:checked');
+//   const markForReview = document.querySelector('reviewCheckbox').checked;
+//   if(selectedOption=='A'||selectedOption=='B'||selectedOption=='C'||selectedOption=='D'&&markForReview=='True')
+//   {
+//     console.log("marked")
+//   }
+// }
+
+
+//question status
+btnNxtQues.addEventListener('click',()=>{
+  quesMark();
+})
+let allques=document.querySelectorAll('.ques-index-list-btn');
+function quesMark(){
+  let check1=0,check2=0;
+   let crntques =parseInt(document.getElementById('ques-head-index').innerHTML);
+    if(userAns[crntques-2]=='A'||userAns[crntques-2]=='B'||userAns[crntques-2]=='C'||userAns[crntques-2]=='D')
+    {
+        check1=1;
+        console.log(check1);
+    }
+    else if(userAns[crntques-2]=='N')
+    {
+      check1=0;
+      console.log(userAns[crntques-2]);
+    }
+    if(document.getElementById('reviewCheckbox').checked==true)
+    {
+      check2=1
+      
+      console.log(check2);
+    }
+    else
+    {
+      check2=0;
+    
+      console.log(check2);
+    }
+    
+
+
+    if(check1==1&&check2==0)
+    {
+      allques[crntques-2].style.backgroundColor='green';
+      console.log("hello")
+    }
+    if(check1==1&&check2==1)
+    {
+      allques[crntques-2].style.backgroundColor='orange';
+    }
+    if(check1==0&&check2==1)
+    {
+      allques[crntques-2].style.backgroundColor='blue';
+    }
+    if(check1==0&&check2==0)
+    {
+      allques[crntques-2].style.backgroundColor='red';
+    }
+   
+   
+}
+let revbtn=document.getElementById('markForReview');
+revbtn.style.backgroundColor='rgb(72, 12, 168)'
+revbtn.addEventListener('click',()=>{
+  if(revbtn.style.backgroundColor=='rgb(72, 12, 168)')
+  revbtn.style.backgroundColor='orange'
+  else
+  revbtn.style.backgroundColor='rgb(72, 12, 168)'
+})
+
+  </script>
+  <script src="/js/timer.js"></script>
+  <script src="/js/submitTest.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</html>

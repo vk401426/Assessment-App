@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Maker</title>
+  <%- include('includes/link-css.ejs') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+    <style>
+
+        
+        .row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .row input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+        .row input[type="button"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #007bff;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .row input[type="button"]:last-child {
+            background-color: #28a745;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            gap: 1rem;
+        }
+        .options .option {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .options input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .dropdown {
+            margin-top: 10px;
+        }
+        .dropdown select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .highlight {
+            background-color: #d4edda;
+        }
+        .dynamic-row {
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .ques-box {
+            background-color: #edede9;
+            padding: 1rem;
+            border: 2px solid;
+            border-radius: 1rem;
+            margin: .4rem 0;
+        }
+    </style>
+</head>
+
+<body id="body">
+  <div class="main">
+    <div class="xm-fg">
+      <div class="header-box" id="header-box">
+        <%- include('includes/header.ejs') %>
+      </div>
+      <div class="content-box" id="content-box">
+        <div class="content-start">        
+            <div class="container">
+                
+                <h2>Test Maker</h2><br>
+                <!-- Static First Row: JobID and JobName -->
+                <div class="row">
+                    <input type="text" id="jobid" placeholder="Job ID">
+                    <input type="text" id="jobname" placeholder="Job Name">
+                </div>
+                <br><br>
+                <!-- Static Second Row: Question -->
+                <div class="ques-box">
+                    <div class="row">
+                        <input type="text" id="question-text" placeholder="Question">
+                    </div>
+                    <!-- Static Third and Fourth Rows: Options -->
+                    <div class="options">
+                        <div class="option">
+                            <input type="text" id="option1-text" placeholder="Option 1">
+                        </div>
+                        <div class="option">
+                            <input type="text" id="option2-text" placeholder="Option 2">
+                        </div>
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="text" id="option3-text" placeholder="Option 3">
+                        </div>
+                        <div class="option">
+                            <input type="text" id="option4-text" placeholder="Option 4">
+                        </div>
+                    </div>
+                    <!-- Dropdown for Correct Answer -->
+                    <div class="dropdown">
+                        <label for="correct-answer">Correct Answer:</label>
+                        <select id="correct-answer">
+                            <option value="">Select Correct Answer</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Dynamic Rows Container -->
+                <div id="dynamic-rows-container"></div>
+                <!-- Fifth Row: Add New Row and Submit -->
+                <div class="row">
+                    <input type="button" value="Add a New Row" onclick="addNewRow()">
+                    <input type="button" value="Submit" onclick="submitForm()">
+                </div>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function addNewRow() {
+        const container = document.getElementById('dynamic-rows-container');
+        const rowCount = container.children.length + 1; // to ensure unique IDs
+        const newRow = document.createElement('div');
+        newRow.className = 'dynamic-row';
+        newRow.dataset.rowId = rowCount;
+        newRow.innerHTML = `
+            <div class="ques-box">
+                <div class="row">
+                    <input type="text" class="question-text" placeholder="Question">
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="text" class="option-text" data-option="A" placeholder="Option A">
+                    </div>
+                    <div class="option">
+                        <input type="text" class="option-text" data-option="B" placeholder="Option B">
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="text" class="option-text" data-option="C" placeholder="Option C">
+                    </div>
+                    <div class="option">
+                        <input type="text" class="option-text" data-option="D" placeholder="Option D">
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <label for="correct-answer-${rowCount}">Correct Answer:</label>
+                    <select class="correct-answer" id="correct-answer-${rowCount}">
+                        <option value="">Select Correct Answer</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+            </div>
+        `;
+        container.appendChild(newRow);
+    }
+    
+    function submitForm() {
+        const formData = [];
+    
+        // Capture static row data
+        const jobid = document.getElementById('jobid').value;
+        const jobname = document.getElementById('jobname').value;
+    
+        // Capture static question data
+        const staticQuestion = {
+            jobid,
+            questions: {
+                options: {
+                    A: document.getElementById('option1-text').value,
+                    B: document.getElementById('option2-text').value,
+                    C: document.getElementById('option3-text').value,
+                    D: document.getElementById('option4-text').value
+                },
+                que_txt: document.getElementById('question-text').value,
+                crct_opt: document.getElementById('correct-answer').value
+            },
+            jobname
+        };
+    
+        // Add static question data to formData
+        formData.push(staticQuestion);
+    
+        // Capture dynamic rows data
+        const dynamicRows = document.querySelectorAll('.dynamic-row');
+        dynamicRows.forEach(row => {
+            const questionText = row.querySelector('.question-text').value;
+            const options = {};
+            row.querySelectorAll('.option-text').forEach(option => {
+                options[option.getAttribute('data-option')] = option.value;
+            });
+            const correctAnswer = row.querySelector('.correct-answer').value;
+    
+            formData.push({
+                jobid,
+                questions: {
+                    options,
+                    que_txt: questionText,
+                    crct_opt: correctAnswer
+                },
+                jobname
+            });
+        });
+    
+        // Send data to backend
+        axios.post('/submit-tests', formData)
+            .then(response => {
+                console.log('Data successfully sent to backend:', response.data);
+            })
+            .catch(error => {
+                console.error('Error sending data to backend:', error);
+            });
+            alert('Test  uploaded successfully!');
+        window.location.reload();
+    
+    }  
+    </script>
+    
+</body>
+
+</html>

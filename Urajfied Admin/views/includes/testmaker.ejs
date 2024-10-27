@@ -1,0 +1,52 @@
+
+<div class="container">
+    <h1 style="color: #000000; border: 2px solid; width: fit-content; padding: .5rem 1rem; border-radius: .6rem;">urjaφ∈d Admin</h1><br>
+    <h2>Test Maker</h2><br>
+    <!-- Static First Row: JobID and JobName -->
+    <div class="row">
+        <input type="text" id="jobid" placeholder="Job ID">
+        <input type="text" id="jobname" placeholder="Job Name">
+    </div>
+    <br><br>
+    <!-- Static Second Row: Question -->
+    <div class="ques-box">
+        <div class="row">
+            <input type="text" id="question-text" placeholder="Question">
+        </div>
+        <!-- Static Third and Fourth Rows: Options -->
+        <div class="options">
+            <div class="option">
+                <input type="text" id="option1-text" placeholder="Option 1">
+            </div>
+            <div class="option">
+                <input type="text" id="option2-text" placeholder="Option 2">
+            </div>
+        </div>
+        <div class="options">
+            <div class="option">
+                <input type="text" id="option3-text" placeholder="Option 3">
+            </div>
+            <div class="option">
+                <input type="text" id="option4-text" placeholder="Option 4">
+            </div>
+        </div>
+        <!-- Dropdown for Correct Answer -->
+        <div class="dropdown">
+            <label for="correct-answer">Correct Answer:</label>
+            <select id="correct-answer">
+                <option value="">Select Correct Answer</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+            </select>
+        </div>
+    </div>
+    <!-- Dynamic Rows Container -->
+    <div id="dynamic-rows-container"></div>
+    <!-- Fifth Row: Add New Row and Submit -->
+    <div class="row">
+        <input type="button" value="Add a New Row" onclick="addNewRow()">
+        <input type="button" value="Submit" onclick="submitForm()">
+    </div>
+</div>
